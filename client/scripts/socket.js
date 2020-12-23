@@ -21,25 +21,45 @@ const PlayerList = {};
 let player = {};
 
 socket.on('connect', (data) => {
-  console.log('You have joined the game');
+  socket.emit('createNewPlayer');
 });
 
 socket.on('join', (data) => {
   player = data.player;
-  if (player.name === '') {
-    socket.emit('joined', { name: Name, id: player.id });
-  }
-});
-
-socket.on('updatePlayer', () => {
-  setInterval(() => {
-    socket.emit('updatePlayer', { player: player });
-  }, 1000);
+  socket.emit('joined', { name: Name });
 });
 
 socket.on('packageUpdate', (data) => {
-  console.log(data);
+  ctx.clearRect(0, 0, 1000, 500);
   data.playerList.forEach((player) => {
     drawPlayer(ctx, player.posx, player.posy);
   });
 });
+
+window.addEventListener('keydown', (event) => {
+  if (event.code === 'KeyA') {
+    player.direction.left = true;
+  } else if (event.code === 'KeyD') {
+    player.direction.right = true;
+  } else if (event.code === 'KeyW') {
+    player.direction.down = true;
+  } else if (event.code === 'KeyS') {
+    player.direction.up = true;
+  }
+});
+
+window.addEventListener('keyup', (event) => {
+  if (event.code === 'KeyA') {
+    player.direction.left = false;
+  } else if (event.code === 'KeyD') {
+    player.direction.right = false;
+  } else if (event.code === 'KeyW') {
+    player.direction.down = false;
+  } else if (event.code === 'KeyS') {
+    player.direction.up = false;
+  }
+});
+
+setInterval(() => {
+  socket.emit('updatePlayer', player);
+}, 60);
