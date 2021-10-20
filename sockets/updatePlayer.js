@@ -1,8 +1,9 @@
 module.exports = (io, socket, GameEngine) => {
   const updatePlayer = (data) => {
-    console.log('updating player');
-    console.log(GameEngine.playerList.length);
-  };
+    // Check for player state changes
 
-  socket.on('player:update', updatePlayer);
-};
+    // Update player states
+  }
+
+  socket.on('player:update', updatePlayer)
+}

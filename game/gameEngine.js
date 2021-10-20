@@ -1,8 +1,8 @@
 class GameEngine {
-  constructor(name) {
-    this.name = name;
-    this.playerList = [];
+  constructor (name) {
+    this.name = name
+    this.playerList = []
   }
 }
 
-module.exports = GameEngine;
+module.exports = GameEngine

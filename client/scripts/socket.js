@@ -26,7 +26,8 @@ function drawBullet(screen, posx, posy) {
 }
 console.log('Creating new player');
 
-function drawAimLine(screen, posx, posy, mPosx, mPosy) {
+
+function drawAimLine(screen, posx, posy, mPosx, mPosy) { 
   screen.beginPath();
   screen.moveTo(posx, posy);
   screen.lineTo(mPosx, mPosy);

@@ -1,18 +1,18 @@
 // Game Imports
-const Player = require('../game/player');
+const Player = require('../game/player')
 
+// Triggers when a client connects to the socket
+// and makes a new player
 module.exports = (io, socket, GameEngine) => {
-  console.log(GameEngine);
   const createPlayer = (data) => {
-    console.log(`Creating new player ${data}`);
-    let newPlayer = new Player(data, socket.id, 50, 50);
+    console.log(`Creating new player:\n ${data}`)
+    const newPlayer = new Player(data, socket.id, 50, 50)
 
     GameEngine.playerList = [
       ...GameEngine.playerList,
-      newPlayer.returnDataSet(),
-    ];
-    console.log(GameEngine.playerList);
-  };
+      newPlayer.returnDataSet()
+    ]
+  }
 
-  socket.on('player:create', createPlayer);
-};
+  socket.on('player:create', createPlayer)
+}
