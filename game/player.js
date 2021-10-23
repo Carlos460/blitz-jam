@@ -9,6 +9,8 @@ class Player {
     this.controllerState = {
       right: false,
       left: false,
+      up: false,
+      down: false,
       jump: false,
       shoot: false
     }
@@ -22,7 +24,8 @@ class Player {
       name: this.name,
       playerAlive: this.playerAlive,
       posx: this.posx,
-      posy: this.posy
+      posy: this.posy,
+      controllerState: this.controllerState
     }
   }
 

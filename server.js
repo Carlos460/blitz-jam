@@ -10,7 +10,7 @@ server.use(express.static('client'))
 
 // Socket Imports
 const registerCreatePlayer = require('./sockets/createPlayer')
-const registerUpdatePlayer = require('./sockets/updatePlayer')
+const registerUpdateControllerState = require('./sockets/updateControllerState')
 const registerSendPackage = require('./sockets/sendPackage')
 
 // Initialize GameEngine
@@ -26,11 +26,11 @@ const onConnection = (socket) => {
   // Register new players
   registerCreatePlayer(io, socket, Platformer)
 
-  // Update Players in game
-  registerUpdatePlayer(io, socket, Platformer)
+  // Update player controller states
+  registerUpdateControllerState(io, socket, Platformer)
 
   // Send updated package to client
-  registerSendPackage(io, socket)
+  registerSendPackage(io, socket, Platformer)
 
   // Disconnect player from List
   socket.on('disconnect', () => {

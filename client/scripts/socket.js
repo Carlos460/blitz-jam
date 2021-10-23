@@ -1,6 +1,91 @@
 const canvas = document.querySelector('#screen');
 const ctx = canvas.getContext('2d');
 
+
+const socket = io.connect('localhost:3000');
+
+const Name = prompt('Please enter name');
+
+let localPlayer = {
+  id: '',
+  name: Name
+}
+
+// Initial socket connection
+socket.on('connect', () => {
+  socket.emit('player:create', Name);
+});
+
+// Sender
+// Update player controller state
+window.addEventListener('keypress', (event) => {
+  if (event.code === 'KeyA') {
+    socket.emit('player:update',{
+      id: localPlayer.id,
+      control: 'left',
+      state: true
+    }); 
+  }
+  if (event.code === 'KeyD') {
+    socket.emit('player:update',{
+      id: localPlayer.id,
+      control: 'right',
+      state: true
+    }); 
+  }
+  if (event.code === 'KeyW') {
+    socket.emit('player:update',{
+      id: localPlayer.id,
+      control: 'up',
+      state: true
+    }); 
+  }
+  if (event.code === 'KeyS') {
+    socket.emit('player:update',{
+      id: localPlayer.id,
+      control: 'down',
+      state: true
+    }); 
+  }
+});
+
+window.addEventListener('keyup', (event) => {
+  if (event.code === 'KeyA') {
+    socket.emit('player:update',{
+      id: localPlayer.id,
+      control: 'left',
+      state: false
+    }); 
+  }
+  if (event.code === 'KeyD') {
+    socket.emit('player:update',{
+      id: localPlayer.id,
+      control: 'right',
+      state: false
+    }); 
+  }
+  if (event.code === 'KeyW') {
+    socket.emit('player:update',{
+      id: localPlayer.id,
+      control: 'up',
+      state: false
+    }); 
+  }
+  if (event.code === 'KeyS') {
+    socket.emit('player:update',{
+      id: localPlayer.id,
+      control: 'down',
+      state: false
+    }); 
+  }
+});
+
+// Reciever
+socket.on('player-init-status',(data)=> {
+  localPlayer.id = data.id;
+});
+
+// Drawing fucntions
 function drawPlayer(screen, posx, posy, index) {
   // the rectangle
   screen.beginPath();
@@ -24,8 +109,6 @@ function drawBullet(screen, posx, posy) {
   screen.fillStyle = '#000000';
   screen.fill();
 }
-console.log('Creating new player');
-
 
 function drawAimLine(screen, posx, posy, mPosx, mPosy) { 
   screen.beginPath();
@@ -33,60 +116,33 @@ function drawAimLine(screen, posx, posy, mPosx, mPosy) {
   screen.lineTo(mPosx, mPosy);
   screen.stroke();
 }
+function drawPlayer(screen, posx, posy, index) {
+  // the rectangle
+  screen.beginPath();
+  screen.rect(posx, posy, 10, 10);
+  screen.closePath();
 
-const socket = io.connect('localhost:3000');
+  const colors = ['#ff0000', '#ffee00', '#26ff00', '#0033ff', '#00f7ff'];
 
-const Name = prompt('Please enter name');
+  // the fill color
+  screen.fillStyle = colors[index];
+  screen.fill();
+}
 
-socket.on('connect', (data) => {
-  socket.emit('player:create', Name);
-});
+function drawBullet(screen, posx, posy) {
+  // the rectangle
+  screen.beginPath();
+  screen.rect(posx, posy, 1, 1);
+  screen.closePath();
 
-setInterval(() => {
-  socket.emit('player:update');
-}, 500);
+  // the fill color
+  screen.fillStyle = '#000000';
+  screen.fill();
+}
 
-// Update Mouse Position
-// function getMousePosition(canvas, event) {
-//   let rect = canvas.getBoundingClientRect();
-//   let x = Math.floor(event.clientX - rect.left);
-//   let y = Math.floor(event.clientY - rect.top);
-
-//   localPlayer.shooterController.mousePosx = x;
-//   localPlayer.shooterController.mousePosy = y;
-// }
-
-// window.onmousemove = (e) => {
-//   getMousePosition(canvas, e);
-// };
-
-// Update Player Input
-// window.addEventListener('keydown', (event) => {
-//   if (event.code === 'KeyA') {
-//     localPlayer.movementController.left = true;
-//   }
-//   if (event.code === 'KeyD') {
-//     localPlayer.movementController.right = true;
-//   }
-//   if (event.code === 'KeyW') {
-//     localPlayer.movementController.down = true;
-//   }
-//   if (event.code === 'KeyS') {
-//     localPlayer.movementController.up = true;
-//   }
-// });
-
-// window.addEventListener('keyup', (event) => {
-//   if (event.code === 'KeyA') {
-//     localPlayer.movementController.left = false;
-//   }
-//   if (event.code === 'KeyD') {
-//     localPlayer.movementController.right = false;
-//   }
-//   if (event.code === 'KeyW') {
-//     localPlayer.movementController.down = false;
-//   }
-//   if (event.code === 'KeyS') {
-//     localPlayer.movementController.up = false;
-//   }
-// });
+function drawAimLine(screen, posx, posy, mPosx, mPosy) { 
+  screen.beginPath();
+  screen.moveTo(posx, posy);
+  screen.lineTo(mPosx, mPosy);
+  screen.stroke();
+}
