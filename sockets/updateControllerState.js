@@ -1,22 +1,15 @@
-module.exports = (io, socket, GameEngine) => {
-  const updatePlayer = (data) => {
-    currentPlayerList = GameEngine.playerList
+module.exports = ( socket, GameEngine) => {
 
-    newPlayerList = currentPlayerList.map((player)=> {
-      if (data.id !== player.id) return player
-      
-      let newPlayer = player
+  // id: localPlayer.id,
+  // control: 'left'| 'right' | 'down'| 'up',
+  // state: true | flase
+  const updatePlayer = (playerCtrlUpdate) => {
+    let player = GameEngine.playerList.get(playerCtrlUpdate.id)
 
-      if (data.control === 'right') newPlayer.controllerState.right = data.state
-      if (data.control === 'left') newPlayer.controllerState.left = data.state
-      if (data.control === 'up') newPlayer.controllerState.up = data.state
-      if (data.control === 'down') newPlayer.controllerState.down = data.state
-
-      return newPlayer
-    })
-
-    GameEngine.playerList = newPlayerList
-    console.log(GameEngine.playerList)
+    if (playerCtrlUpdate.control === 'right') player.controllerState.right = playerCtrlUpdate.state
+    if (playerCtrlUpdate.control === 'left') player.controllerState.left = playerCtrlUpdate.state
+    if (playerCtrlUpdate.control === 'up') player.controllerState.up = playerCtrlUpdate.state
+    if (playerCtrlUpdate.control === 'down') player.controllerState.down = playerCtrlUpdate.state
   }
 
   socket.on('player:update', updatePlayer)

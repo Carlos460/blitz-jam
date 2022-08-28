@@ -16,7 +16,7 @@ class Player {
     }
   }
 
-  returnDataSet () {
+  returnDataSet() {
     // No need to JSON.stringify since socket.io does it for you
     // when you send a response to the client
     return {

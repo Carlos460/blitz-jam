@@ -1,22 +1,46 @@
 const canvas = document.querySelector('#screen');
 const ctx = canvas.getContext('2d');
 
-
 const socket = io.connect('localhost:3000');
 
-const Name = prompt('Please enter name');
+// initail player instance
+let localPlayer = {}
 
-let localPlayer = {
-  id: '',
-  name: Name
-}
+// Get player  name by prompt 
+const _name = prompt('Please enter name');
 
 // Initial socket connection
+// with paler _name
 socket.on('connect', () => {
-  socket.emit('player:create', Name);
+  console.log('sending name to create player')
+  socket.emit('player:create', _name);
 });
 
-// Sender
+socket.on('player-init-status',(data)=> {
+  localPlayer = data;
+  console.log("recieved player data", localPlayer)
+});
+
+////////////////////
+/// drawing loop ///
+///////////////////
+
+/////////////////////////
+///    Listening      ///
+////////////////////////
+
+// map of player list
+socket.on('packet', (packet) => {
+  ctx.clearRect( 0, 0, canvas.width, canvas.height);
+  packet.forEach(currPlayer => {
+    drawPlayer(ctx, currPlayer.posx, currPlayer.posy, 1)
+  });
+});
+
+///////////////
+/// Sending ///
+///////////////
+
 // Update player controller state
 window.addEventListener('keypress', (event) => {
   if (event.code === 'KeyA') {
@@ -80,42 +104,10 @@ window.addEventListener('keyup', (event) => {
   }
 });
 
-// Reciever
-socket.on('player-init-status',(data)=> {
-  localPlayer.id = data.id;
-});
+/////////////////////////
+/// Drawing fucntions ///
+////////////////////////
 
-// Drawing fucntions
-function drawPlayer(screen, posx, posy, index) {
-  // the rectangle
-  screen.beginPath();
-  screen.rect(posx, posy, 10, 10);
-  screen.closePath();
-
-  const colors = ['#ff0000', '#ffee00', '#26ff00', '#0033ff', '#00f7ff'];
-
-  // the fill color
-  screen.fillStyle = colors[index];
-  screen.fill();
-}
-
-function drawBullet(screen, posx, posy) {
-  // the rectangle
-  screen.beginPath();
-  screen.rect(posx, posy, 1, 1);
-  screen.closePath();
-
-  // the fill color
-  screen.fillStyle = '#000000';
-  screen.fill();
-}
-
-function drawAimLine(screen, posx, posy, mPosx, mPosy) { 
-  screen.beginPath();
-  screen.moveTo(posx, posy);
-  screen.lineTo(mPosx, mPosy);
-  screen.stroke();
-}
 function drawPlayer(screen, posx, posy, index) {
   // the rectangle
   screen.beginPath();

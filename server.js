@@ -24,23 +24,17 @@ const Platformer = new GameEngine('platformer')
 // Sockets and disconnect
 const onConnection = (socket) => {
   // Register new players
-  registerCreatePlayer(io, socket, Platformer)
+  registerCreatePlayer(socket, Platformer)
 
   // Update player controller states
-  registerUpdateControllerState(io, socket, Platformer)
+  registerUpdateControllerState(socket, Platformer)
 
   // Send updated package to client
-  registerSendPackage(io, socket, Platformer)
+  registerSendPackage(socket, Platformer)
 
   // Disconnect player from List
   socket.on('disconnect', () => {
-    Platformer.playerList.forEach((player, index, playerList) => {
-      console.log(player)
-      console.log(`id of left: ${socket.id}`)
-      if (player.id === socket.id) {
-        playerList.splice(index, 1)
-      }
-    })
+    Platformer.playerList.delete(socket.index)
   })
 }
 
