@@ -1,45 +1,43 @@
-const express = require('express')
-const server = express()
-const http = require('http').createServer(server)
-const io = require('socket.io')(http)
+const express = require('express');
+const server = express();
+const http = require('http').createServer(server);
+const io = require('socket.io')(http);
 
-// Game Imports
-const GameEngine = require('./game/gameEngine')
+const GameEngine = require('./game/gameEngine');
+const PORT = 3000;
 
-server.use(express.static('client'))
+server.use(express.static('client'));
 
 // Socket Imports
-const registerCreatePlayer = require('./sockets/createPlayer')
-const registerUpdateControllerState = require('./sockets/updateControllerState')
-const registerSendPackage = require('./sockets/sendPackage')
+const registerCreatePlayer = require('./sockets/createPlayer');
+const registerUpdateControllerState = require('./sockets/updateControllerState');
+const registerSendPackage = require('./sockets/sendPackage');
 
 // Initialize GameEngine
-const Platformer = new GameEngine('platformer')
-
-// TODO
-// 1. Get palyer contoller states
-// 2. Calculate new states and positions
-// 3. Send data to client
+const Game = new GameEngine('multiplayer game');
 
 // Sockets and disconnect
 const onConnection = (socket) => {
   // Register new players
-  registerCreatePlayer(socket, Platformer)
+  registerCreatePlayer(socket, Game);
 
   // Update player controller states
-  registerUpdateControllerState(socket, Platformer)
+  registerUpdateControllerState(socket, Game);
 
   // Send updated package to client
-  registerSendPackage(socket, Platformer)
+  registerSendPackage(socket, Game);
 
   // Disconnect player from List
-  socket.on('disconnect', () => {
-    Platformer.playerList.delete(socket.index)
-  })
-}
+  socket.on('disconnecting', () => {
+    const playerDisconnect = Game.playerList.get(socket.id);
 
-io.on('connection', onConnection)
+    console.log('Player disconnected: ' + playerDisconnect.name);
+    Game.playerList.delete(socket.id);
+  });
+};
 
-http.listen(3000, () => {
-  console.log('listening on port :3000')
-})
+io.on('connection', onConnection);
+
+http.listen(PORT, () => {
+  console.log(`listening on port: ${PORT}`);
+});

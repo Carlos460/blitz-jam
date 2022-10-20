@@ -1,17 +1,47 @@
 class GameEngine {
-  constructor (name) {
-    this.name = name
+  constructor(name) {
+    this.name = name;
     this.gravity = 0.8;
     this.playerList = new Map();
+    this.playerSpeed = 100;
+
+    this.lastTime = Date.now();
+    this.deltaTime;
   }
-  updatePlayerPos = () => {
-    this.playerList.forEach(player => {
-      if (player.controllerState.right === true) player.posx += 5;
-      if (player.controllerState.left === true) player.posx -= 5;
-      if (player.controllerState.up === true) player.posy -= 5;
-      if (player.controllerState.down === true) player.posy += 5;
+
+  calcDeltaTime = () => {
+    const currentTime = Date.now();
+    this.deltaTime = (currentTime - this.lastTime) / 1000;
+    this.lastTime = currentTime;
+  };
+
+  getPlayerPackage = () => {
+    let playerListPacket = [];
+
+    this.playerList.forEach((player) => {
+      playerListPacket.push({
+        id: player.id,
+        name: player.name,
+        playerAlive: player.playerAlive,
+        posx: player.posx,
+        posy: player.posy,
+      });
     });
-  }
+    return playerListPacket;
+  };
+
+  updatePlayerPos = (deltaTime) => {
+    this.playerList.forEach((player) => {
+      if (player.controllerState.right === true)
+        player.posx += this.playerSpeed * deltaTime;
+      if (player.controllerState.left === true)
+        player.posx -= this.playerSpeed * deltaTime;
+      if (player.controllerState.up === true)
+        player.posy -= this.playerSpeed * deltaTime;
+      if (player.controllerState.down === true)
+        player.posy += this.playerSpeed * deltaTime;
+    });
+  };
 }
 
-module.exports = GameEngine
+module.exports = GameEngine;
