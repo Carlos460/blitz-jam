@@ -7,21 +7,54 @@
   box-sizing: border-box;
 }
 
-.header {
+.content {
   display: flex;
   flex-direction: column;
   justify-content: center;
 
   width: 100%;
   height: 100vh;
-  background-color: rgb(3, 22, 51);
+  background-color: #101010;
 }
 
-.title_container {
-  margin: 25px auto;
-  color: white;
+.menu {
+  margin: 0px auto;
+  width: 1200px;
+  display: flex;
+  justify-content: space-between;
+}
 
+.title {
+  display: flex;
+  color: white;
   font-family: 'Press Start 2P';
+}
+
+.title > h1 {
+  margin: auto 0px;
+}
+
+.join-content,
+.leave-content {
+  display: flex;
+  gap: 25px;
+}
+
+.leave-content {
+  display: flex;
+  color: white;
+}
+
+.hide-content {
+  display: none;
+}
+
+.player-name {
+  margin: auto 0px;
+  width: 200px;
+  height: 50px;
+  font-family: 'Press Start 2P';
+  font-size: 18px;
 }
 
 #main-frame {
@@ -29,15 +62,23 @@
   margin: 25px auto;
 }
 
-#name-field{
+#name-field {
   width: 200px;
-  height: 75px;
+  height: 50px;
   outline: none;
   border: none;
+  border-radius: 5px;
+  padding: 0px 5px;
+
+  font-size: 18px;
 }
 
 #join-button {
   width: 100px;
-  height: 75px;
-} 
+  height: 50px;
+}
 
+#leave-button {
+  width: 100px;
+  height: 50px;
+}

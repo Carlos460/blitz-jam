@@ -7,14 +7,22 @@
     <link rel="stylesheet" href="./styles/home.css" />
   </head>
   <body>
-    <section class="header">
-      <div class="title_container">
-        <h1>Platformer Game</h1>
+    <main class="content">
+      <div class="menu">
+        <div class="title">
+          <h1>Blitz-Jam</h1>
+        </div>
+        <div class="join-content">
+          <input type="text" id="name-field" placeholder="username" />
+          <button id="join-button">Join</button>
+        </div>
+        <div class="leave-content hide-content">
+          <h1 class="player-name"></h1>
+          <button id="leave-button">Leave</button>
+        </div>
       </div>
-        <input type="text" id="name-field" placeholder="username"/> 
-        <button id="join-button">Join</button>
       <canvas id="main-frame" width="1200" height="800"></canvas>
-    </section>
+    </main>
     <script src="/socket.io/socket.io.js"></script>
     <script src="./scripts/socket.js"></script>
   </body>
