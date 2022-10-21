@@ -3,7 +3,7 @@ class GameEngine {
     this.name = name;
     this.gravity = 0.8;
     this.playerList = new Map();
-    this.playerSpeed = 100;
+    this.playerSpeed = 200;
 
     this.lastTime = Date.now();
     this.deltaTime;
@@ -41,6 +41,15 @@ class GameEngine {
       if (player.controllerState.down === true)
         player.posy += this.playerSpeed * deltaTime;
     });
+  };
+  run = (socket) => {
+    setInterval(() => {
+      this.calcDeltaTime();
+
+      this.updatePlayerPos(this.deltaTime);
+
+      socket.emit('packet', this.getPlayerPackage());
+    }, 10);
   };
 }
 
