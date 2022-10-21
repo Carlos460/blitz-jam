@@ -19,15 +19,25 @@
 
 .title_container {
   margin: 25px auto;
-
   color: white;
-  font-family: 'Press Start 2P', cursive;
+
+  font-family: 'Press Start 2P';
 }
 
-#screen {
+#main-frame {
+  background-color: #5c5c5c;
   margin: 25px auto;
-
-  height: 500px;
-  width: 1000px;
-  background-color: rgb(139, 139, 139);
 }
+
+#name-field{
+  width: 200px;
+  height: 75px;
+  outline: none;
+  border: none;
+}
+
+#join-button {
+  width: 100px;
+  height: 75px;
+} 
+

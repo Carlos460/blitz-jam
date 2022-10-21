@@ -1,26 +1,31 @@
-const canvas = document.querySelector('#screen');
+const joinButton = document.querySelector("#join-button");
+const nameField = document.querySelector("#name-field");
+
+const canvas = document.querySelector('#main-frame');
 const ctx = canvas.getContext('2d');
 
-const socket = io.connect('localhost:3000');
 
-// initail player instance
+const playerColors = ['#ff0000', '#26ff00', '#0033ff','#f200f2', '#ffee00', '#00f7ff'];
+
 let localPlayer = {};
 
-// Get player  name by prompt
-const _name = prompt('Please enter name');
+let socket = io.connect('localhost:3000');
 
-console.log(screen.width);
+joinButton.addEventListener('click', () => {
+  if (nameField.value === ''){
+    alert("enter a name");
+    return;
+  }
 
-// Initial socket connection
-// with paler _name
-socket.on('connect', () => {
-  console.log('sending name to create player');
-  socket.emit('player:create', { name: _name });
+  socket.emit('player:create', { name: nameField.value });
 });
+
+/////////////////////////
+///    Listening      ///
+////////////////////////
 
 socket.on('player-init-status', (data) => {
   localPlayer = data;
-  console.log(localPlayer);
   console.log('recieved player data', localPlayer);
 });
 
@@ -28,15 +33,13 @@ socket.on('player-init-status', (data) => {
 /// drawing loop ///
 ///////////////////
 
-/////////////////////////
-///    Listening      ///
-////////////////////////
-
 // map of player list
 socket.on('packet', (packet) => {
+  // clear canvas
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  packet.forEach((currPlayer) => {
-    drawPlayer(ctx, currPlayer.posx, currPlayer.posy, 1);
+  // draw every player
+  packet.map((currPlayer, index) => {
+    drawPlayer(ctx, currPlayer.posx, currPlayer.posy, playerColors[index]);
   });
 });
 
@@ -111,16 +114,14 @@ window.addEventListener('keyup', (event) => {
 /// Drawing fucntions ///
 ////////////////////////
 
-function drawPlayer(screen, posx, posy, index) {
+function drawPlayer(screen, posx, posy, colorCode) {
   // the rectangle
   screen.beginPath();
-  screen.rect(posx, posy, 10, 10);
+  screen.rect(posx, posy, 25, 25);
   screen.closePath();
 
-  const colors = ['#ff0000', '#ffee00', '#26ff00', '#0033ff', '#00f7ff'];
-
   // the fill color
-  screen.fillStyle = colors[index];
+  screen.fillStyle = colorCode;
   screen.fill();
 }
 
