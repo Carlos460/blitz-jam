@@ -42,13 +42,14 @@ class GameEngine {
         player.posy += this.playerSpeed * deltaTime;
     });
   };
+
   run = (socket) => {
     setInterval(() => {
       this.calcDeltaTime();
 
       this.updatePlayerPos(this.deltaTime);
 
-      socket.emit('packet', this.getPlayerPackage());
+      socket.emit('packet:update', this.getPlayerPackage());
     }, 10);
   };
 }

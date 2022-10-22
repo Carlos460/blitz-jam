@@ -9,7 +9,8 @@ const PORT = 3000;
 server.use(express.static('client'));
 
 // Socket Imports
-const registerCreatePlayer = require('./sockets/createPlayer');
+const registerPlayerJoin = require('./sockets/playerJoin');
+const registerPlayerLeave = require('./sockets/playerLeave');
 const registerUpdateControllerState = require('./sockets/updateControllerState');
 
 // Initialize GameEngine
@@ -19,11 +20,10 @@ const Game = new GameEngine('multiplayer game');
 const onConnection = (socket) => {
   Game.run(socket);
 
-  // Register new players
-  registerCreatePlayer(socket, Game);
-
-  // Update player controller states
+  // Register sockets events
+  registerPlayerJoin(socket, Game);
   registerUpdateControllerState(socket, Game);
+  registerPlayerLeave(socket, Game);
 
   // Disconnect player from List
   socket.on('disconnecting', () => {
