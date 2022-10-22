@@ -1,10 +1,10 @@
 class Player {
-  constructor (name, id, posx, posy) {
-    this._id = id
-    this.name = name
-    this.playerAlive = true
-    this.posx = posx
-    this.posy = posy
+  constructor(name, id, posx, posy) {
+    this._id = id;
+    this.name = name;
+    this.playerAlive = true;
+    this.posx = posx;
+    this.posy = posy;
     // Used to apply updates
     this.controllerState = {
       right: false,
@@ -12,8 +12,8 @@ class Player {
       up: false,
       down: false,
       jump: false,
-      shoot: false
-    }
+      shoot: false,
+    };
   }
 
   returnDataSet() {
@@ -25,14 +25,14 @@ class Player {
       playerAlive: this.playerAlive,
       posx: this.posx,
       posy: this.posy,
-      controllerState: this.controllerState
-    }
+      controllerState: this.controllerState,
+    };
   }
 
-  isMoving () {
+  isMoving() {
     // Checks if the controllerState object has a value of true for any of its properties
-    return Object.values(this.controllerState).some(value => value === true)
+    return Object.values(this.controllerState).some((value) => value === true);
   }
 }
 
-module.exports = Player
+module.exports = Player;

@@ -33,13 +33,13 @@ class GameEngine {
   updatePlayerPos = (deltaTime) => {
     this.playerList.forEach((player) => {
       if (player.controllerState.right === true)
-        player.posx += this.playerSpeed * deltaTime;
+        player.posx += Math.floor(this.playerSpeed * deltaTime);
       if (player.controllerState.left === true)
-        player.posx -= this.playerSpeed * deltaTime;
+        player.posx -= Math.floor(this.playerSpeed * deltaTime);
       if (player.controllerState.up === true)
-        player.posy -= this.playerSpeed * deltaTime;
+        player.posy -= Math.floor(this.playerSpeed * deltaTime);
       if (player.controllerState.down === true)
-        player.posy += this.playerSpeed * deltaTime;
+        player.posy += Math.floor(this.playerSpeed * deltaTime);
     });
   };
 
