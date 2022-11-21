@@ -3,7 +3,7 @@ const server = express();
 const http = require('http').createServer(server);
 const io = require('socket.io')(http);
 
-const GameEngine = require('./game/gameEngine');
+const Game = require('./game/Game');
 const PORT = 3000;
 
 server.use(express.static('client'));
@@ -14,25 +14,25 @@ const registerPlayerLeave = require('./sockets/playerLeave');
 const registerUpdateControllerState = require('./sockets/updateControllerState');
 
 // Initialize GameEngine
-const Game = new GameEngine('multiplayer game');
+const game = new Game('multiplayer game');
 
 // Sockets and disconnect
 const onConnection = (socket) => {
-  Game.run(socket);
+  game.run(socket);
 
   // Register sockets events
-  registerPlayerJoin(socket, Game);
-  registerUpdateControllerState(socket, Game);
-  registerPlayerLeave(socket, Game);
+  registerPlayerJoin(socket, game);
+  registerUpdateControllerState(socket, game);
+  registerPlayerLeave(socket, game);
 
   // Disconnect player from List
   socket.on('disconnecting', () => {
-    const playerDisconnect = Game.playerList.get(socket.id) || false;
+    const playerDisconnect = game.playerList.get(socket.id) || false;
 
     if (playerDisconnect)
       console.log('Player disconnected: ' + playerDisconnect.name);
 
-    Game.playerList.delete(socket.id);
+    game.playerList.delete(socket.id);
   });
 };
 

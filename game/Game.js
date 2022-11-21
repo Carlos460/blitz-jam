@@ -1,12 +1,18 @@
-class GameEngine {
-  constructor(name) {
-    this.name = name;
+class Game {
+  constructor() {
     this.gravity = 0.8;
-    this.playerList = new Map();
     this.playerSpeed = 200;
-
+    // Delta Time
     this.lastTime = Date.now();
     this.deltaTime;
+    // Managers
+    this.EntityManager = new EntityManager();
+
+    // Create entity list
+    // 0 -> Players
+    this.playerList = new Map();
+
+    this.EntityManager.addList(this.playerList);
   }
 
   calcDeltaTime = () => {
@@ -28,6 +34,10 @@ class GameEngine {
       });
     });
     return playerListPacket;
+  };
+
+  addPlayer = (newPlayer) => {
+    this.playerList.set(newPlayer._id, newPlayer.returnDataSet());
   };
 
   updatePlayerPos = (deltaTime) => {
@@ -54,4 +64,4 @@ class GameEngine {
   };
 }
 
-module.exports = GameEngine;
+module.exports = Game;
