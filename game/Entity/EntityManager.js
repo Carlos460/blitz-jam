@@ -1,14 +1,14 @@
-
 class EntityManager {
-  enitityList;
-
+  playerList;
   constructor() {
-    this.enitityList = [];
+    this.playerList = new Map();
   }
-  addList(entities) {
-    enitityList.push(entities);
+  addPlayer(_id, _playerData) {
+    this.playerList.set(_id, _playerData);
   }
-
+  getPlayer(_id) {
+    this.playerList.get(_id);
+  }
 }
 
 module.exports = EntityManager;

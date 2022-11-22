@@ -18,7 +18,7 @@ const game = new Game('multiplayer game');
 
 // Sockets and disconnect
 const onConnection = (socket) => {
-  game.run(socket);
+  game.setClientPackageSender(socket);
 
   // Register sockets events
   registerPlayerJoin(socket, game);
