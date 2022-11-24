@@ -3,8 +3,8 @@ const Body = require('./Component/Body');
 class Player {
   id;
   name = 'noName';
-  body;
-  controller;
+  Controller;
+  Body;
   constructor() {
     this._id;
     this.name;
@@ -23,13 +23,11 @@ class Player {
     this.Controller = new _controller();
     return this;
   }
-
-  getPlayerData() {
+  getData() {
     return {
-      id: this._id,
+      id: this.id,
       isAlive: this.Body.isActive,
       position: this.Body.getPosition(),
-      controllerState: this.controller.getControllerState(),
     };
   }
 }

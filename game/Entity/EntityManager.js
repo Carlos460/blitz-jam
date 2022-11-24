@@ -1,13 +1,27 @@
 class EntityManager {
-  playerList;
+  #entityList;
   constructor() {
-    this.playerList = new Map();
+    this.#entityList = new Map();
   }
-  addPlayer(_id, _playerData) {
-    this.playerList.set(_id, _playerData);
+  addEntity(_entity) {
+    this.#entityList.set(_entity.id, _entity);
   }
-  getPlayer(_id) {
-    this.playerList.get(_id);
+  removeEntity(_id) {
+    this.#entityList.delete(_id);
+  }
+  getEntity(_id) {
+    return this.#entityList.get(_id);
+  }
+
+  getEntityDataPackage() {
+    let playerPackage = [];
+
+    for (let player of this.#entityList.values()) {
+      playerPackage.push(player.getData());
+    }
+
+    console.log(playerPackage);
+    return playerPackage;
   }
 }
 

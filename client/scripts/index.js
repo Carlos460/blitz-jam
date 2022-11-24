@@ -39,12 +39,17 @@ leaveButton.addEventListener('click', () => {
   socket.emit('player:leave', { name: nameField.value });
 });
 
-// Draws most recent data from server
+/**
+ * Draws data recieved from server
+ * @params Array<Player> Array of Player objects
+ *                       {id: string, isAlive: bool, position: {x: int, y: int}}
+ */
 socket.on('packet:update', (packet) => {
   // clear canvas
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   // draw every player
   packet.map((currPlayer, index) => {
-    drawPlayer(ctx, currPlayer.posx, currPlayer.posy, playerColors[index]);
+    const { id, isAlive, position } = currPlayer;
+    drawPlayer(ctx, position.x, position.y, playerColors[index]);
   });
 });

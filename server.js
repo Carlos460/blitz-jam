@@ -27,12 +27,12 @@ const onConnection = (socket) => {
 
   // Disconnect player from List
   socket.on('disconnecting', () => {
-    const playerDisconnect = game.playerList.get(socket.id) || false;
+    const playerDisconnect = game.PlayerManager.getEntity(socket.id) || null;
 
     if (playerDisconnect)
       console.log('Player disconnected: ' + playerDisconnect.name);
 
-    game.playerList.delete(socket.id);
+    game.removePlayer(socket.id);
   });
 };
 
