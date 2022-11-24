@@ -30,6 +30,20 @@ class Player {
       position: this.Body.getPosition(),
     };
   }
+  setDirection() {
+    const controllerState = this.Controller.getControllerState();
+    let [x, y] = [0, 0];
+
+    if (controllerState.get('right') === true) x += 1;
+    if (controllerState.get('left') === true) x += -1;
+    if (controllerState.get('up') === true) y += -1;
+    if (controllerState.get('down') === true) y += 1;
+
+    this.Body.setDirection(x, y);
+  }
+  update() {
+    this.setDirection();
+  }
 }
 
 module.exports = Player;

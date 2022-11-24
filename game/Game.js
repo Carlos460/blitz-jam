@@ -27,26 +27,10 @@ class Game {
     return this.PlayerManager.getEntity(_id);
   }
 
-  // updatePlayerPos = (deltaTime) => {
-  //   this.playerList.forEach((player) => {
-  //     if (player.controllerState.right === true)
-  //       player.posx += Math.floor(this.playerSpeed * deltaTime);
-  //     if (player.controllerState.left === true)
-  //       player.posx -= Math.floor(this.playerSpeed * deltaTime);
-  //     if (player.controllerState.up === true)
-  //       player.posy -= Math.floor(this.playerSpeed * deltaTime);
-  //     if (player.controllerState.down === true)
-  //       player.posy += Math.floor(this.playerSpeed * deltaTime);
-  //   });
-  // };
-
   setClientPackageSender = (socket) => {
     setInterval(() => {
       this.calcDeltaTime();
-
-      // apply physics
-
-      // apply collision
+      this.PlayerManager.update();
 
       socket.emit('packet:update', this.PlayerManager.getEntityDataPackage());
     }, 10);

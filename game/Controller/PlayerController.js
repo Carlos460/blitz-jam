@@ -9,8 +9,7 @@ class PlayerController {
   getControllerState() {
     return this.#controllerState;
   }
-  updateControllerState(_controllerState) {
-    const { control, state } = _controllerState;
+  updateControllerState(control, state) {
     // Expects _controller state data to be mapped
     // to the PlayerController.controllerState Object
     this.#controllerState.set(control, state);

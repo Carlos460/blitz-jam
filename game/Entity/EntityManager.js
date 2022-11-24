@@ -9,19 +9,26 @@ class EntityManager {
   removeEntity(_id) {
     this.#entityList.delete(_id);
   }
+  setEnitiy(_key, _value) {
+    this.#entityList.set(_key, _value);
+  }
   getEntity(_id) {
     return this.#entityList.get(_id);
   }
-
   getEntityDataPackage() {
-    let playerPackage = [];
+    let entityPackage = [];
 
-    for (let player of this.#entityList.values()) {
-      playerPackage.push(player.getData());
+    for (let entity of this.#entityList.values()) {
+      entityPackage.push(entity.getData());
     }
 
-    console.log(playerPackage);
-    return playerPackage;
+    return entityPackage;
+  }
+  update() {
+    this.#entityList;
+    for (let entity of this.#entityList.values()) {
+      entity.update();
+    }
   }
 }
 

@@ -3,7 +3,6 @@
 window.addEventListener('keypress', (event) => {
   if (event.code === 'KeyA') {
     socket.emit('player:update', {
-      id: socket.id,
       control: 'left',
       state: true,
     });
