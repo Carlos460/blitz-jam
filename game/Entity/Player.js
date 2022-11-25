@@ -2,7 +2,8 @@ const Body = require('./Component/Body');
 
 class Player {
   id;
-  name = 'noName';
+  name;
+  speed;
   Controller;
   Body;
   constructor() {
@@ -10,6 +11,7 @@ class Player {
     this.name;
     this.Controller;
     this.Body = new Body();
+    this.speed = 250;
   }
   setName(_name) {
     this.name = _name;
