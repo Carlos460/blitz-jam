@@ -15,7 +15,7 @@ class EntityManager {
   getEntity(_id) {
     return this.#entityList.get(_id);
   }
-  getEntities(_id) {
+  getEntities() {
     return this.#entityList;
   }
   getEntityDataPackage() {

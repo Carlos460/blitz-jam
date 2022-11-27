@@ -5,6 +5,8 @@ class PlayerController {
     this.#controllerState.set('left', false);
     this.#controllerState.set('up', false);
     this.#controllerState.set('down', false);
+    this.#controllerState.set('shoot', false);
+    this.#controllerState.set('mousePosition', {x: 0, y: 0})
   }
   getControllerState() {
     return this.#controllerState;

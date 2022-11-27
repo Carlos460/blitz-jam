@@ -1,11 +1,11 @@
 class Body {
-  isActive = true;
-  #position = { x: 0, y: 0 };
-  #direction = { x: 0, y: 0 };
+  #position;
+  #direction;
+  #mouseDirection;
   constructor() {
-    this.isActive;
-    this.#position;
-    this.#direction;
+    this.#position = { x: 0, y: 0 };
+    this.#direction = { x: 0, y: 0 };
+    this.#mouseDirection = { x: 0, y: 0 };
   }
   setDirection(x, y) {
     this.#direction = { x, y };
@@ -18,6 +18,12 @@ class Body {
   }
   getPosition() {
     return this.#position;
+  }
+  setMousePosition(x, y) {
+    this.#mouseDirection = { x, y };
+  }
+  getMousePosition() {
+    return this.#mouseDirection;
   }
 }
 

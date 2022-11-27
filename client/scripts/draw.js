@@ -11,13 +11,16 @@ function drawPlayer(screen, posx, posy, colorCode) {
 }
 
 function drawBullet(screen, posx, posy) {
+  const width = 5;
+  const height = 5;
+
   // the rectangle
   screen.beginPath();
-  screen.rect(posx, posy, 1, 1);
+  screen.rect(posx - (width / 2), posy - (height / 2), width, height);
   screen.closePath();
 
   // the fill color
-  screen.fillStyle = '#000000';
+  screen.fillStyle = '#ffffff';
   screen.fill();
 }
 

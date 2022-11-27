@@ -6,6 +6,7 @@ class Game {
     this.PhysicsWorld = new Physics();
     // Managers
     this.PlayerManager = new EntityManager();
+    this.ProjectileManager = new EntityManager();
   }
   addPlayer(_player) {
     this.PlayerManager.addEntity(_player);
@@ -20,9 +21,12 @@ class Game {
   setClientPackageSender = (socket) => {
     setInterval(() => {
       this.PlayerManager.update();
-      this.PhysicsWorld.step(this.PlayerManager.getEntities());
+      this.PhysicsWorld.step(this.PlayerManager, this.ProjectileManager);
 
-      socket.emit('packet:update', this.PlayerManager.getEntityDataPackage());
+      socket.emit('packet:update', {
+        players: this.PlayerManager.getEntityDataPackage(),
+        projectiles: this.ProjectileManager.getEntityDataPackage(),
+      });
     }, 10);
   };
 }
