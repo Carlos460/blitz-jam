@@ -35,4 +35,4 @@ class EntityManager {
   }
 }
 
-module.exports = EntityManager;
+module.exports = { EntityManager };

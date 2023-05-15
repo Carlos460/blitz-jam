@@ -3,41 +3,17 @@ const server = express();
 const http = require('http').createServer(server);
 const io = require('socket.io')(http);
 
-const Game = require('./game/Game');
-const PORT = 3000;
+const App = require('./src');
+const app = new App();
 
 server.use(express.static('client'));
 
-// Socket Imports
-const registerPlayerJoin = require('./sockets/playerJoin');
-const registerPlayerLeave = require('./sockets/playerLeave');
-const registerUpdateControllerState = require('./sockets/updateControllerState');
+app.run();
 
-// Initialize GameEngine
-const game = new Game('multiplayer game');
+io.on('connection', (socket) => {
+  app.attachSocket(socket).registerSockets();
+});
 
-// Sockets and disconnect
-const onConnection = (socket) => {
-  game.setClientPackageSender(socket);
-
-  // Register sockets events
-  registerPlayerJoin(socket, game);
-  registerUpdateControllerState(socket, game);
-  registerPlayerLeave(socket, game);
-
-  // Disconnect player from List
-  socket.on('disconnecting', () => {
-    const playerDisconnect = game.PlayerManager.getEntity(socket.id) || null;
-
-    if (playerDisconnect)
-      console.log('Player disconnected: ' + playerDisconnect.name);
-
-    game.removePlayer(socket.id);
-  });
-};
-
-io.on('connection', onConnection);
-
-http.listen(PORT, () => {
-  console.log(`listening on port: ${PORT}`);
+http.listen(3000, () => {
+  console.log(`listening on port: ${3000}`);
 });

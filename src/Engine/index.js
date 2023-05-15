@@ -1,9 +1,13 @@
-const { Time } = require("./Time"); 
+const { Time } = require("./Time");
 const { normalize, applyForce } = require("./Vector2D");
+const { EntityManager } = require("./EntityManager");
 
-class Physics {
+class Engine {
   constructor() {
     this.Time = new Time();
+
+    this.PlayerManager = new EntityManager();
+    this.ProjectileManager = new EntityManager();
   }
 
   step(playerManager, projectileManager) {
@@ -48,4 +52,4 @@ class Physics {
   }
 }
 
-module.exports = Physics;
+module.exports = Engine;

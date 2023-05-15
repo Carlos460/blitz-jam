@@ -20,15 +20,32 @@ const playerColors = [
 
 let socket = io.connect('localhost:3000');
 
+let username;
+let roomId;
+
+
 joinButton.addEventListener('click', () => {
+  // check for username
   if (nameField.value === '') {
     alert('enter a name');
     return;
   }
+
   joinContent.classList.add('hide-content');
   leaveContent.classList.remove('hide-content');
   playerNameTitle.innerHTML = nameField.value;
-  socket.emit('player:join', { name: nameField.value });
+
+  if (!roomId) {
+    // connect to a random room
+    console.log("hello");
+    socket.emit('join:random_room', { username: nameField.value });
+  } else if (roomId) {
+    socket.emit('join:room', {
+      username: nameField.value,
+      roomId: roomId
+    });
+  }
+
 });
 
 leaveButton.addEventListener('click', () => {
@@ -36,7 +53,7 @@ leaveButton.addEventListener('click', () => {
   joinContent.classList.remove('hide-content');
   leaveContent.classList.add('hide-content');
   // Leave game
-  socket.emit('player:leave', { name: nameField.value });
+  socket.emit('player:Room', { name: nameField.value });
 });
 
 /** 
@@ -53,7 +70,7 @@ function getMousePos(canvas, evt) {
 }
 
 
-let mousePos = {x: 0, y: 0}
+let mousePos = { x: 0, y: 0 }
 
 /**
  * Update mouse position
@@ -65,7 +82,7 @@ canvas.addEventListener('mousemove', (e) => {
 setInterval(() => {
   socket.emit('player:update', {
     control: 'mousePosition',
-    state: {x: mousePos.x, y: mousePos.y},
+    state: { x: mousePos.x, y: mousePos.y },
   });
 }, 50)
 
@@ -74,7 +91,7 @@ setInterval(() => {
  * @param ArrayOfPlayers: {id: string, isAlive: bool, position: {x: int, y: int}}
  */
 socket.on('packet:update', (packet) => {
-  const {players, projectiles} = packet;
+  const { players, projectiles } = packet;
   // clear canvas
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   // draw every player
