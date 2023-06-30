@@ -7,12 +7,12 @@ class Room {
 
   addClient(id, username) {
     this.#clientList.set(id, username);
-    console.log("client added");
+    console.log(`player joined: ${username}`);
   }
 
-  removeClient(id) {
+  removeClient(id, username) {
     this.#clientList.delete(id);
-    console.log("client removed");
+    console.log(`player left: ${username}`);
   }
 
   getClientList() {

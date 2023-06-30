@@ -26,6 +26,6 @@ class App {
       this.RoomManager.update();
     }, 10);
   }
-}
+ }
 
 module.exports = App;
