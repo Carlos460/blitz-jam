@@ -14,13 +14,13 @@
   justify-content: center;
 
   width: 100%;
+  padding: 0px 50px;
   height: 100vh;
   background-color: #101010;
 }
 
 .menu {
-  margin: 0px auto;
-  width: 1200px;
+  width: 100%;
   display: flex;
   justify-content: space-between;
 }

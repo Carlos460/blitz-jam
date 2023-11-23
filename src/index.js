@@ -1,6 +1,5 @@
-const RoomManager = require('./Socket/RoomManager');
+const RoomManager = require('./RoomManager');
 const joinRoom = require('./Socket/joinRoom');
-const joinRandomRoom = require('./Socket/joinRandomRoom');
 const leaveRoom = require('./Socket/leaveRoom');
 
 class App {
@@ -12,7 +11,6 @@ class App {
   registerSockets() {
     if (this.Socket === null) return;
     joinRoom(this.Socket, this.RoomManager);
-    joinRandomRoom(this.Socket, this.RoomManager);
     leaveRoom(this.Socket, this.RoomManager);
   }
 
@@ -26,6 +24,6 @@ class App {
       this.RoomManager.update();
     }, 10);
   }
- }
+}
 
 module.exports = App;

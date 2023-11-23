@@ -1,7 +1,7 @@
 class Room {
   #clientList = new Map();
+  #id = '';
   constructor() {
-    this.id;
     return this;
   }
 
@@ -20,12 +20,14 @@ class Room {
   }
 
   setId(id) {
-    this.id = id;
+    this.#id = id;
     return this;
   }
+  getId() {
+    return this.#id;
+  }
 
-  update() {
-  };
+  update() {}
 }
 
 class RoomManager {
@@ -33,9 +35,13 @@ class RoomManager {
   #queList = new Array();
 
   createRoom(id) {
+    console.log(id);
     this.#list.set(id, new Room().setId(id));
     this.#queList.push(id);
     return this.#list.get(id);
+  }
+  deleteRoom(id) {
+    this.#list.delete(id);
   }
 
   getRoom(id) {
@@ -45,10 +51,13 @@ class RoomManager {
   getRoomListLength() {
     return this.#list.size;
   }
+  getRoomList() {
+    return this.#list;
+  }
 
   getQueuedRoom() {
     // get the first room in que, change later
-    const queRoomId = this.#queList[0]
+    const queRoomId = this.#queList[0];
 
     return this.#list.get(queRoomId);
   }
