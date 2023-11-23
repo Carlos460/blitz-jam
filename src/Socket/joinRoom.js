@@ -22,20 +22,13 @@ const joinRoom = (Socket, RoomManager) => {
 };
 
 function findRandomRoom(Socket, RoomManager, username) {
-  // creates new room
-  let roomId = uuidv4();
-
-  console.log(RoomManager.getRoomListLength());
-
   const room =
     RoomManager.getRoomListLength() > 0
       ? RoomManager.getQueuedRoom()
-      : RoomManager.createRoom(roomId);
+      : RoomManager.createRoom(uuidv4());
 
   room.addClient(Socket.id, username);
-  roomId = room.getId();
-
-  console.log(RoomManager.getRoomList(), room.getClientList());
+  const roomId = room.getId();
 
   Socket.emit('update:room-id', roomId);
 }
