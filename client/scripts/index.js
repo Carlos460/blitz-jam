@@ -55,9 +55,13 @@ leaveButton.addEventListener('click', () => {
   roomId = '';
   roomIdText.innerHTML = '';
 });
+socket.on('update', (msg) => {
+  console.log(msg);
+});
 
 // update roomId for client
 socket.on('update:room-id', (id) => {
+  console.log(`updating room id: ${id}`);
   roomId = id;
   roomIdText.innerHTML = id;
 });

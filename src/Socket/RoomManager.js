@@ -27,7 +27,9 @@ class Room {
     return this.#id;
   }
 
-  update() {}
+  update(io) {
+    io.to(this.#id).emit('update', { message: 'hello' });
+  }
 }
 
 class RoomManager {
@@ -63,9 +65,9 @@ class RoomManager {
     return this.#list.get(queRoomId);
   }
 
-  update() {
+  update(io) {
     for (const room of this.#list.values()) {
-      room.update();
+      room.update(io);
     }
   }
 }

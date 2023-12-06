@@ -8,6 +8,7 @@ const leaveRoom = (Socket, RoomManager) => {
     }
 
     room.removeClient(Socket.id, username);
+    Socket.leave(roomId);
     const roomSize = room.getClientList().size;
 
     if (roomSize === 0) {

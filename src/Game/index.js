@@ -3,10 +3,10 @@ const joinRoom = require('../Socket/joinRoom');
 const leaveRoom = require('../Socket/leaveRoom');
 
 class App {
-  constructor() {
+  constructor(io) {
     this.RoomManager = new RoomManager();
     this.io = null;
-    this.run();
+    this.run(io);
   }
 
   registerSockets(socket) {
@@ -14,9 +14,9 @@ class App {
     leaveRoom(socket, this.RoomManager);
   }
 
-  run() {
+  run(io) {
     setInterval(() => {
-      this.RoomManager.update();
+      this.RoomManager.update(io);
     }, 10);
   }
 }

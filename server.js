@@ -6,7 +6,7 @@ const App = require('./src/Game');
 
 server.use(express.static('client'));
 
-const app = new App();
+const app = new App(io);
 
 io.on('connection', (socket) => {
   console.log('Connection:', socket.id);
