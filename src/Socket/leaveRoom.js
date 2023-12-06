@@ -7,9 +7,11 @@ const leaveRoom = (Socket, RoomManager) => {
       return;
     }
 
-    room.getClientList();
     room.removeClient(Socket.id, username);
-    if (room.getClientList().size === 0) {
+    const roomSize = room.getClientList().size;
+
+    if (roomSize === 0) {
+      console.log(`deleting room(${roomSize} players): ${roomId}`);
       RoomManager.deleteRoom(roomId);
     }
   });

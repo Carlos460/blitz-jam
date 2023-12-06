@@ -27,6 +27,7 @@ function findRandomRoom(Socket, RoomManager, username) {
       ? RoomManager.getQueuedRoom()
       : RoomManager.createRoom(uuidv4());
 
+  console.log(room);
   room.addClient(Socket.id, username);
   const roomId = room.getId();
 

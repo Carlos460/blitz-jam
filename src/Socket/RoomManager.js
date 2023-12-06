@@ -7,12 +7,12 @@ class Room {
 
   addClient(id, username) {
     this.#clientList.set(id, username);
-    console.log(`player joined: ${username}`);
+    console.log(`${username}[${id}] joined room: ${this.#id}`);
   }
 
   removeClient(id, username) {
     this.#clientList.delete(id);
-    console.log(`player left: ${username}`);
+    console.log(`${username}[${id}] left room: ${this.#id}`);
   }
 
   getClientList() {
@@ -35,11 +35,12 @@ class RoomManager {
   #queList = new Array();
 
   createRoom(id) {
-    console.log(id);
+    console.log(`Creating room:${id}`);
     this.#list.set(id, new Room().setId(id));
     this.#queList.push(id);
     return this.#list.get(id);
   }
+
   deleteRoom(id) {
     this.#list.delete(id);
   }
