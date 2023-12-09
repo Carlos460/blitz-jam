@@ -2,7 +2,7 @@ const express = require('express');
 const server = express();
 const http = require('http').createServer(server);
 const io = require('socket.io')(http);
-const App = require('./src/Game');
+const App = require('./src');
 
 server.use(express.static('client'));
 

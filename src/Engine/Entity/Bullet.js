@@ -1,4 +1,5 @@
 const Body = require('./Component/Body');
+const { uuidv4 } = require('../../Util/uuid');
 
 class Bullet {
   constructor() {

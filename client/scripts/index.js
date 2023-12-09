@@ -97,10 +97,14 @@ canvas.addEventListener('mousemove', (e) => {
 });
 
 setInterval(() => {
-  socket.emit('player:update', {
-    control: 'mousePosition',
-    state: { x: mousePos.x, y: mousePos.y },
-  });
+  socket.emit(
+    'player:update',
+    {
+      control: 'mousePosition',
+      state: { x: mousePos.x, y: mousePos.y },
+    },
+    roomId
+  );
 }, 50);
 
 /**
@@ -108,7 +112,8 @@ setInterval(() => {
  * @param ArrayOfPlayers: {id: string, isAlive: bool, position: {x: int, y: int}}
  */
 socket.on('packet:update', (packet) => {
-  const { players, projectiles } = packet;
+  console.log(packet);
+  const [players, projectiles] = packet;
   // clear canvas
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   // draw every player

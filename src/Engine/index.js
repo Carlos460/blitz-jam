@@ -1,20 +1,73 @@
-const { Time } = require("./Time");
-const { normalize, applyForce } = require("./Vector2D");
-const { EntityManager } = require("./EntityManager");
+const { Time } = require('./Time');
+const { normalize, applyForce } = require('./Vector2D');
+const { EntityManager } = require('./EntityManager');
+const Player = require('./Entity/Player');
 
 class Engine {
   constructor() {
     this.Time = new Time();
+    this.Worlds = new Map();
+  }
+  createWorld(id) {
+    const world = {
+      playerManager: new EntityManager(),
+      projectileManager: new EntityManager(),
+    };
 
-    this.PlayerManager = new EntityManager();
-    this.ProjectileManager = new EntityManager();
+    this.Worlds.set(id, world);
   }
 
-  step(playerManager, projectileManager) {
+  deleteWorld(id) {
+    this.Worlds.delete(id);
+  }
+
+  getPlayer(roomId, playerId) {
+    const world = this.Worlds.get(roomId);
+
+    if (world === undefined) return;
+
+    const player = world.playerManager.getEntity(playerId);
+
+    return player;
+  }
+
+  addPlayer(roomId, playerId) {
+    const world = this.Worlds.get(roomId);
+
+    if (world === undefined) return;
+
+    const player = new Player().setId(playerId);
+
+    world.playerManager.addEntity(player);
+  }
+
+  removePlayer(roomId, playerId) {
+    const world = this.Worlds.get(roomId);
+
+    world.playerManager.removeEntity(playerId);
+  }
+
+  getPacket(id) {
+    // return array of [player data, projectile data]
+    const world = this.Worlds.get(id);
+
+    if (world === undefined) return;
+
+    const players = world.playerManager.getEntityDataPackage();
+    const projectiles = world.projectileManager.getEntityDataPackage();
+
+    return [players, projectiles];
+  }
+
+  step(id) {
+    const { playerManager, projectileManager } = this.Worlds.get(id);
+
     this.Time.calcDeltaTime();
 
     // update players
     for (let entity of playerManager.getEntities().values()) {
+      console.log('entitiy: ', entity);
+      entity.update();
       const controllerState = entity.Controller.getControllerState() || null;
 
       // Invoke shooting
@@ -31,9 +84,13 @@ class Engine {
         position,
         direction,
         entity.speed,
-        this.Time.deltaTime)
+        this.Time.deltaTime
+      );
 
       entity.Body.setPosition(newPosition.x, newPosition.y);
+
+      console.log(entity.Controller.getControllerState());
+      console.log(entity.Body.getDirection());
     }
 
     // update projectiles
@@ -45,7 +102,8 @@ class Engine {
         position,
         direction,
         projectile.speed,
-        this.Time.deltaTime)
+        this.Time.deltaTime
+      );
 
       projectile.Body.setPosition(newPosition.x, newPosition.y);
     }

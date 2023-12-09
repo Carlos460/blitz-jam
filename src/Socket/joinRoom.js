@@ -1,9 +1,9 @@
 const { uuidv4 } = require('../Util/uuid');
 
-const joinRoom = (Socket, RoomManager) => {
+const joinRoom = (Socket, RoomManager, Engine) => {
   Socket.on('join:room', ({ roomId, username }) => {
     if (roomId === '') {
-      findRandomRoom(Socket, RoomManager, username);
+      findRandomRoom(Socket, Engine, RoomManager, username);
       return;
     }
 
@@ -18,11 +18,12 @@ const joinRoom = (Socket, RoomManager) => {
     }
 
     room.addClient(Socket.id, username);
+    Engine.addPlayer(roomId, Socket.id);
     Socket.join(roomId);
   });
 };
 
-function findRandomRoom(Socket, RoomManager, username) {
+function findRandomRoom(Socket, Engine, RoomManager, username) {
   const room =
     RoomManager.getRoomListLength() > 0
       ? RoomManager.getQueuedRoom()
@@ -31,6 +32,7 @@ function findRandomRoom(Socket, RoomManager, username) {
   const roomId = room.getId();
 
   room.addClient(Socket.id, username);
+  Engine.addPlayer(roomId, Socket.id);
   Socket.join(roomId);
 
   Socket.emit('update:room-id', roomId);

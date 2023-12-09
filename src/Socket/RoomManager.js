@@ -27,24 +27,32 @@ class Room {
     return this.#id;
   }
 
-  update(io) {
-    io.to(this.#id).emit('update', { message: 'hello' });
+  update(io, Engine) {
+    Engine.step(this.#id);
+    const data = Engine.getPacket(this.#id);
+    io.to(this.#id).emit('packet:update', data);
   }
 }
 
 class RoomManager {
   #list = new Map();
   #queList = new Array();
+  #engine;
 
+  attachEngine(engine) {
+    this.#engine = engine;
+  }
   createRoom(id) {
     console.log(`Creating room:${id}`);
     this.#list.set(id, new Room().setId(id));
     this.#queList.push(id);
+    this.#engine.createWorld(id);
     return this.#list.get(id);
   }
 
   deleteRoom(id) {
     this.#list.delete(id);
+    this.#engine.deleteWorld(id);
   }
 
   getRoom(id) {
@@ -65,9 +73,9 @@ class RoomManager {
     return this.#list.get(queRoomId);
   }
 
-  update(io) {
+  update(io, Engine) {
     for (const room of this.#list.values()) {
-      room.update(io);
+      room.update(io, Engine);
     }
   }
 }

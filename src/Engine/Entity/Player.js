@@ -1,14 +1,15 @@
 const Body = require('./Component/Body');
 const Bullet = require('./Bullet');
-const { uuidv4 } = require('../Utils');
+const PlayerController = require('../Controller/PlayerController');
 
 class Player {
   constructor() {
     this._id;
     this.name;
-    this.Controller;
+    this.Controller = new PlayerController();
     this.Body = new Body();
     this.speed = 250;
+    this.isAlive = true;
   }
 
   setName(_name) {
@@ -29,7 +30,7 @@ class Player {
   getData() {
     return {
       id: this.id,
-      isAlive: this.Body.isActive,
+      isAlive: this.Body.isAlive,
       position: this.Body.getPosition(),
     };
   }
@@ -55,7 +56,7 @@ class Player {
     projectile.Body.setPosition(x + positionOffset.x, y + positionOffset.y);
     projectile.Body.setDirection(projectileDirection.x, projectileDirection.y);
 
-    return newProjectile;
+    return projectile;
   }
 
   update() {
