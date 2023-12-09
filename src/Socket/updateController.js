@@ -1,11 +1,14 @@
-module.exports = (socket, game) => {
+const updateControllerState = (Socket, Engine) => {
   // control: 'left'| 'right' | 'down'| 'up',
   // state: true | flase
-  socket.on('player:update', (controllerPackage) => {
+  Socket.on('player:update', (controllerPackage, roomId) => {
     const { control, state } = controllerPackage;
-    const player = game.getPlayer(socket.id) || null;
+
+    const player = Engine.getPlayer(roomId, Socket.id) || null;
     if (player === null) return;
 
     player.Controller.updateControllerState(control, state);
   });
 };
+
+module.exports = updateControllerState;

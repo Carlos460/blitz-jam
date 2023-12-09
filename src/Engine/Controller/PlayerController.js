@@ -6,7 +6,7 @@ class PlayerController {
     this.#controllerState.set('up', false);
     this.#controllerState.set('down', false);
     this.#controllerState.set('shoot', false);
-    this.#controllerState.set('mousePosition', {x: 0, y: 0})
+    this.#controllerState.set('mousePosition', { x: 0, y: 0 });
   }
 
   getControllerState() {
@@ -14,7 +14,7 @@ class PlayerController {
   }
 
   updateControllerState(control, state) {
-    // Expects _controller state data to be mapped
+    // Expects controller state data to be mapped
     // to the PlayerController.controllerState Object
     this.#controllerState.set(control, state);
   }

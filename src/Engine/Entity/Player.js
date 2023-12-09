@@ -1,34 +1,15 @@
 const Body = require('./Component/Body');
-const { uuidv4 } =  require('../Utils');
-
-class Bullet {
-  constructor() {
-    this.id = uuidv4();
-    this.belongsTo;
-    this.speed = 1500;
-
-    this.Body = new Body();
-  }
-  setBelongsTo(_id) {
-    this.belongsTo = _id;
-  }
-
-  getData() {
-    return {
-      id: this.id,
-      isAlive: this.Body.isActive,
-      position: this.Body.getPosition(),
-    };
-  }
-}
+const Bullet = require('./Bullet');
+const PlayerController = require('../Controller/PlayerController');
 
 class Player {
   constructor() {
     this._id;
     this.name;
-    this.Controller;
+    this.Controller = new PlayerController();
     this.Body = new Body();
     this.speed = 250;
+    this.isAlive = true;
   }
 
   setName(_name) {
@@ -49,7 +30,7 @@ class Player {
   getData() {
     return {
       id: this.id,
-      isAlive: this.Body.isActive,
+      isAlive: this.Body.isAlive,
       position: this.Body.getPosition(),
     };
   }
@@ -57,26 +38,25 @@ class Player {
   shoot() {
     this.Controller.updateControllerState('shoot', false);
 
-    const offset = { x: 12.5, y: 12.5 };
+    const positionOffset = { x: 12.5, y: 12.5 };
     const { x, y } = this.Body.getPosition();
+
     const mousePosition =
       this.Controller.getControllerState().get('mousePosition');
+
     const playerPosition = this.Body.getPosition();
     const projectileDirection = {
       x: mousePosition.x - playerPosition.x,
       y: mousePosition.y - playerPosition.y,
     };
 
-    const newProjectile = new Bullet();
+    const projectile = new Bullet();
 
-    newProjectile.setBelongsTo(this.id);
-    newProjectile.Body.setPosition(x + offset.x, y + offset.y);
-    newProjectile.Body.setDirection(
-      projectileDirection.x,
-      projectileDirection.y
-    );
+    projectile.setBelongsTo(this.id);
+    projectile.Body.setPosition(x + positionOffset.x, y + positionOffset.y);
+    projectile.Body.setDirection(projectileDirection.x, projectileDirection.y);
 
-    return newProjectile;
+    return projectile;
   }
 
   update() {
