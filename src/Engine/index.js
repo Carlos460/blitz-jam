@@ -1,6 +1,6 @@
-const { Time } = require('./Time');
-const { normalize, applyForce } = require('./Vector2D');
-const { EntityManager } = require('./EntityManager');
+const { Time } = require('./Math/Time');
+const { normalize, applyForce } = require('./Math/Vector2D');
+const { EntityManager } = require('./Entity/EntityManager');
 const Player = require('./Entity/Player');
 
 class Engine {
@@ -8,6 +8,7 @@ class Engine {
     this.Time = new Time();
     this.Worlds = new Map();
   }
+
   createWorld(id) {
     const world = {
       playerManager: new EntityManager(),
@@ -66,7 +67,6 @@ class Engine {
 
     // update players
     for (let entity of playerManager.getEntities().values()) {
-      console.log('entitiy: ', entity);
       entity.update();
       const controllerState = entity.Controller.getControllerState() || null;
 
@@ -87,10 +87,14 @@ class Engine {
         this.Time.deltaTime
       );
 
-      entity.Body.setPosition(newPosition.x, newPosition.y);
+      // room level wall collision
+      if (newPosition.x > 1175) newPosition.x = 1175;
+      if (newPosition.x < 0) newPosition.x = 0;
 
-      console.log(entity.Controller.getControllerState());
-      console.log(entity.Body.getDirection());
+      if (newPosition.y > 775) newPosition.y = 775;
+      if (newPosition.y < 0) newPosition.y = 0;
+
+      entity.Body.setPosition(newPosition.x, newPosition.y);
     }
 
     // update projectiles
@@ -104,6 +108,16 @@ class Engine {
         projectile.speed,
         this.Time.deltaTime
       );
+
+      // out of bound projectiles are removed
+      if (
+        newPosition.x > 1200 ||
+        newPosition.x < 0 ||
+        newPosition.y > 800 ||
+        newPosition.y < 0
+      ) {
+        projectileManager.removeEntity(projectile.getId());
+      }
 
       projectile.Body.setPosition(newPosition.x, newPosition.y);
     }

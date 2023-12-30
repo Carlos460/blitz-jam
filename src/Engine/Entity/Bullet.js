@@ -9,6 +9,10 @@ class Bullet {
 
     this.Body = new Body();
   }
+  getId() {
+    return this.id;
+  }
+
   setBelongsTo(_id) {
     this.belongsTo = _id;
   }
